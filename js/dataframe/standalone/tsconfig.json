@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"target": "es2020",
+		"module": "esnext",
+		"lib": ["es2020", "dom"],
+		"types": ["svelte", "node"],
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"strict": false,
+		"declaration": true,
+		"declarationMap": false,
+		"outDir": "./dist",
+		"rootDir": "."
+	},
+	"include": ["./**/*.ts", "./**/*.svelte", "./types.d.ts"],
+	"exclude": ["node_modules", "dist", "**/*.tgz"]
+}
