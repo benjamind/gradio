@@ -94,6 +94,64 @@ TypeScript
 
 The package publishes `types.d.ts` with `DataframeProps` module declarations.
 
+Custom Styling
+--------------
+
+The package publishes `dataframe.css` with the default styles. You can override the styles by adding your own CSS.
+
+Option 1: Override the internal design tokens
+
+```svelte
+  <div class="df-theme">
+      <Dataframe ... />
+    </div>
+
+    <style>
+      .df-theme {
+        --border-color-primary: #7c3aed;
+        --radius-md: 10px;
+        --background-fill-primary: #0b1020;
+        --table-even-background-fill: #121936;
+        --table-odd-background-fill: #0e1530;
+        --body-text-color: #e5e7eb;
+        --input-text-size: 14px;
+      }
+    </style>
+```
+
+Option 2: Override the internal styles
+
+```svelte
+    <div class="df-override">
+      <Dataframe ... />
+    </div>
+
+    <style>
+      /* Border only wraps the actual table */
+      .df-override :global(.table-wrap) {
+        border: 1px solid #7c3aed;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      /* Header/row styling */
+      .df-override :global(.thead th) {
+        background: #1f2937;
+        color: #fff;
+      }
+      .df-override :global(.tbody td) {
+        padding: 8px 10px;
+      }
+
+      /* Pinned column divider */
+      .df-override :global(td.last-pinned),
+      .df-override :global(th.last-pinned) {
+        border-right: 1px solid #7c3aed;
+      }
+    </style>
+```
+
+
 Notes
 -----
 
