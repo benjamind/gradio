@@ -500,6 +500,10 @@
 			return;
 		}
 
+		if (!parent) {
+			return;
+		}
+
 		last_width_data_length = data.length;
 		last_width_column_count = column_count;
 
@@ -948,11 +952,9 @@
 						active_header_menu !== null}
 					bind:viewport
 					bind:show_scroll_button
+					{label}
 					on:scroll_top={(_) => {}}
 				>
-					{#if label && label.length !== 0}
-						<caption class="sr-only">{label}</caption>
-					{/if}
 					<tr slot="thead">
 						{#if show_row_numbers}
 							<RowNumber is_header={true} />
