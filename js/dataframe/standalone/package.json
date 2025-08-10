@@ -1,7 +1,7 @@
 {
-	"name": "@hmbgradio/dataframe-standalone",
-	"version": "1.0.2",
-	"description": "Standalone Gradio Dataframe component for Svelte and React",
+	"name": "@gradio/dataframe-standalone",
+	"version": "1.0.20",
+	"description": "Standalone Gradio Dataframe component for Svelte",
 	"type": "module",
 	"main": "Index.svelte",
 	"svelte": "Index.svelte",
@@ -12,29 +12,22 @@
 			"svelte": "./Index.svelte",
 			"default": "./Index.svelte"
 		},
-		"./react": {
-			"types": "./react.d.ts",
-			"import": "./DataframeReact.tsx",
-			"default": "./DataframeReact.tsx"
-		},
 		"./shared/*": "./shared/*",
 		"./package.json": "./package.json"
 	},
 	"files": [
 		"Index.svelte",
-		"DataframeReact.tsx",
 		"shared/**/*",
 		"dataframe.css",
 		"stubs.ts",
 		"stubs/**/*",
 		"types.d.ts",
-		"react.d.ts",
-		"tsconfig.json",
 		"svelte.config.js",
 		"vite.config.js"
 	],
 	"scripts": {
 		"build": "tsx build.ts",
+		"prepublishOnly": "npx tsx build.ts",
 		"dev": "vite dev",
 		"preview": "vite preview",
 		"test": "vite dev --port 3002"
@@ -50,12 +43,10 @@
 		"vite": "^5.0.0"
 	},
 	"peerDependencies": {
-		"svelte": "^4.0.0 || ^5.0.0",
-		"react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+		"svelte": "^4.0.0 || ^5.0.0"
 	},
 	"keywords": [
 		"svelte",
-		"react",
 		"dataframe",
 		"table",
 		"gradio",

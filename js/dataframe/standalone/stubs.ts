@@ -24,6 +24,7 @@ export const skip_audio = (): void => {};
 export const process_audio = (): void => {};
 
 export { default as BaseCheckbox } from "./stubs/BaseCheckbox.svelte";
+export { default as Upload } from "./stubs/Upload.svelte";
 
 export const StatusTracker = null;
 
