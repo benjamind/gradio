@@ -87,9 +87,13 @@ function apply_file_specific_modifications(
 	content: string,
 	filepath: string
 ): string {
-	const filename = filepath.split("/").pop() || "";
-	const modifications = FILE_MODIFICATIONS[filename] || [];
-	return apply_replacements(content, modifications);
+	const modifications =
+		FILE_MODIFICATIONS[filepath] ||
+		FILE_MODIFICATIONS[filepath.split("/").pop() || ""] ||
+		[];
+	return modifications.reduce((modified, { pattern, replacement }) => {
+		return modified.replace(pattern, replacement);
+	}, content);
 }
 
 function modifyImports(content: string, filepath: string): string {
@@ -189,7 +193,7 @@ function create_consolidated_css(): void {
 
 		const scopedResetCSS = resetCSS
 			.replace(/\.gradio-container,\s*\*/g, ".gradio-dataframe-standalone *")
-			.replace(/^(\s*)\*(\s*[,\{])/gm, "$1.gradio-dataframe-standalone *$2")
+			.replace(/^(\s*)\*(\s*[,{])/gm, "$1.gradio-dataframe-standalone *$2")
 			.replace(
 				/^(\s*)::before,(\s*)::after(\s*\{)/gm,
 				"$1.gradio-dataframe-standalone *::before,$2.gradio-dataframe-standalone *::after$3"
@@ -223,10 +227,11 @@ ${themeCSS}
 	}
 }
 
+// Main execution
 setup_theme();
 setup_shared_directory();
 
-const files_to_copy = [
+const filesToCopy = [
 	"Table.svelte",
 	"EditableCell.svelte",
 	"RowNumber.svelte",
@@ -263,7 +268,7 @@ const files_to_copy = [
 	"types.ts"
 ];
 
-copy_and_modify_files(files_to_copy);
+copy_and_modify_files(filesToCopy);
 console.log("✅ Shared files copied and modified for standalone use");
 
 function update_types_file(): void {
@@ -271,12 +276,10 @@ function update_types_file(): void {
 		const typesPath = "./types.d.ts";
 		if (existsSync(typesPath)) {
 			let content = readFileSync(typesPath, "utf8");
-
 			content = content.replace(
 				/@gradio\/dataframe-standalone/g,
 				"@hmbgradio/dataframe-standalone"
 			);
-
 			writeFileSync(typesPath, content);
 			console.log("✅ Updated types.d.ts with correct package name");
 		} else {
@@ -291,32 +294,6 @@ function update_types_file(): void {
 }
 
 update_types_file();
-
-function copy_react_wrapper(): void {
-	try {
-		const reactWrapperPath = "./DataframeReact.tsx";
-		const reactTypesPath = "./react.d.ts";
-
-		if (existsSync(reactWrapperPath)) {
-			console.log("✅ React wrapper found: DataframeReact.tsx");
-		} else {
-			console.log("⚠️  React wrapper not found, skipping");
-		}
-
-		if (existsSync(reactTypesPath)) {
-			console.log("✅ React types found: react.d.ts");
-		} else {
-			console.log("⚠️  React types not found, skipping");
-		}
-	} catch (error) {
-		console.error(
-			"❌ Failed to process React wrapper:",
-			error instanceof Error ? error.message : String(error)
-		);
-	}
-}
-
-copy_react_wrapper();
 
 create_consolidated_css();
 
