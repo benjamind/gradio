@@ -1,0 +1,8 @@
+shared/
+*.tgz
+*.log
+node_modules/
+package/
+theme/
+theme.css
+dataframe.css
