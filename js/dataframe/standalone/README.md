@@ -80,13 +80,26 @@ Common Props
 Events
 ------
 
-- change — emitted when data changes
-- select — selection changes
-- search — search/filter actions
-- fullscreen — fullscreen toggle
+The component emits the following events:
+
+- change: fires when table data changes
+  - detail: `{ data: (string | number | boolean)[][], headers: string[], metadata: null }`
+- select: fires when cell selection changes
+  - detail: `{ index: number[]; value: any; selected: boolean }`
+- search: fires when the search input changes (when `show_search` is `"search" | "filter"`)
+  - detail: `string | null`
+- fullscreen: fires when the fullscreen toggle is clicked
+  - detail: `boolean` (true when entering fullscreen, false when exiting)
+
+Example:
 
 ```svelte
-<Dataframe on:change={(e) => console.log(e.detail)} />
+<Dataframe
+  on:change={(e) => console.log('data', e.detail)}
+  on:select={(e) => console.log('select', e.detail)}
+  on:search={(e) => console.log('search', e.detail)}
+  on:fullscreen={(e) => console.log('fullscreen', e.detail)}
+/>
 ```
 
 TypeScript
@@ -151,13 +164,10 @@ Option 2: Override the internal styles
     </style>
 ```
 
-
 Notes
 -----
 
-- Fullscreen button emits `fullscreen`; host decides container behavior. 
-
-!!! fix this
+- Fullscreen button emits `fullscreen`; host decides container behavior.
 
 License
 -------
