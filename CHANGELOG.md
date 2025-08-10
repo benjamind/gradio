@@ -1,5 +1,48 @@
 # gradio
 
+## 5.42.0
+
+### Features
+
+- [#11703](https://github.com/gradio-app/gradio/pull/11703) [`cbc6a84`](https://github.com/gradio-app/gradio/commit/cbc6a84494bd28693527c7bcfadb05762dd4f3d3) - Fix flaky tests for release.  Thanks @abidlabs!
+- [#11700](https://github.com/gradio-app/gradio/pull/11700) [`37d4c48`](https://github.com/gradio-app/gradio/commit/37d4c4809616595642f8d4a60be37d9915317443) - Have `Client` send authorization token with the `X-HF-Authorization` token.  Thanks @abidlabs!
+- [#11691](https://github.com/gradio-app/gradio/pull/11691) [`2605a99`](https://github.com/gradio-app/gradio/commit/2605a99bf29bebbbb0a97cc8e0015b5bf8d8e79b) - Add .failure() event listener for error handling.  Thanks @elanehan!
+
+### Fixes
+
+- [#11697](https://github.com/gradio-app/gradio/pull/11697) [`caca402`](https://github.com/gradio-app/gradio/commit/caca402c3a1b74f9a79302313cb17b635854f36a) - Fix `gr.LoginButton` to work on custom domains.  Thanks @abidlabs!
+- [#11692](https://github.com/gradio-app/gradio/pull/11692) [`0b91ca9`](https://github.com/gradio-app/gradio/commit/0b91ca914774fe617bc5987986e14bf1b81fcb8d) - Fix z-index of icon button wrapper.  Thanks @dawoodkhan82!
+- [#11698](https://github.com/gradio-app/gradio/pull/11698) [`fc41f09`](https://github.com/gradio-app/gradio/commit/fc41f0950b7c427abcebdc9a113148a219d8f3f6) - Fix visibility changes in gr.render.  Thanks @aliabid94!
+
+## 5.41.1
+
+### Features
+
+- [#11688](https://github.com/gradio-app/gradio/pull/11688) [`56f3f09`](https://github.com/gradio-app/gradio/commit/56f3f09b6c629a5719088806dbbb37f272d8d4f5) - Fix column header logic in gr.Dataframe.  Thanks @hannahblair!
+- [#11686](https://github.com/gradio-app/gradio/pull/11686) [`b995b1c`](https://github.com/gradio-app/gradio/commit/b995b1ce2932cf9cb96ca1b48205fac802000d6d) - Some tweaks to Dialogue Component.  Thanks @freddyaboulton!
+
+### Fixes
+
+- [#11685](https://github.com/gradio-app/gradio/pull/11685) [`56d2b90`](https://github.com/gradio-app/gradio/commit/56d2b90e2c37c58ba19c9cbd55fe881946b007ed) - vibe editor by not hard-coding inference provider.  Thanks @abidlabs!
+
+## 5.41.0
+
+### Features
+
+- [#11662](https://github.com/gradio-app/gradio/pull/11662) [`a78f5fa`](https://github.com/gradio-app/gradio/commit/a78f5fa466a4b11ffaaafc5099a64df49afb6e41) - Gradio vibe editor.  Thanks @aliabid94!
+- [#11674](https://github.com/gradio-app/gradio/pull/11674) [`27d9aef`](https://github.com/gradio-app/gradio/commit/27d9aef4831d99ec46f9b5553fc7e149afe23f5f) - Add dialogue component to docs.  Thanks @aliabd!
+
+### Fixes
+
+- [#11667](https://github.com/gradio-app/gradio/pull/11667) [`07d19f7`](https://github.com/gradio-app/gradio/commit/07d19f7af3b60ff4a931d2c6740c9d61e6685dcb) - Fix the ImageEditor's auto-zoom, canvas resize, and zoom functionality.  Thanks @pngwn!
+- [#11666](https://github.com/gradio-app/gradio/pull/11666) [`4060858`](https://github.com/gradio-app/gradio/commit/4060858f353f37d3ba6d38df39752af8c1a5c6af) - Fix cached examples bug.  Thanks @freddyaboulton!
+
+## 5.40.0
+
+### Features
+
+- [#11092](https://github.com/gradio-app/gradio/pull/11092) [`c8c17f1`](https://github.com/gradio-app/gradio/commit/c8c17f1a909952616a01967839482153d1419b78) - Add gr.Dialogue component.  Thanks @freddyaboulton!
+
 ## 5.39.0
 
 ### Features

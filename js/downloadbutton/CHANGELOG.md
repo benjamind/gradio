@@ -1,5 +1,19 @@
 # @gradio/downloadbutton
 
+## 0.4.10
+
+### Dependency updates
+
+- @gradio/client@1.17.0
+- @gradio/button@0.5.10
+
+## 0.4.9
+
+### Dependency updates
+
+- @gradio/client@1.16.0
+- @gradio/button@0.5.9
+
 ## 0.4.8
 
 ### Dependency updates

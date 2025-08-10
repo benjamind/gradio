@@ -1,5 +1,30 @@
 # @gradio/dataframe
 
+## 0.18.7
+
+### Dependency updates
+
+- @gradio/statustracker@0.10.16
+- @gradio/atoms@0.16.4
+- @gradio/client@1.17.0
+- @gradio/upload@0.16.14
+- @gradio/button@0.5.10
+- @gradio/checkbox@0.4.27
+
+## 0.18.6
+
+### Features
+
+- [#11688](https://github.com/gradio-app/gradio/pull/11688) [`56f3f09`](https://github.com/gradio-app/gradio/commit/56f3f09b6c629a5719088806dbbb37f272d8d4f5) - Fix column header logic in gr.Dataframe.  Thanks @hannahblair!
+
+## 0.18.5
+
+### Dependency updates
+
+- @gradio/upload@0.16.13
+- @gradio/client@1.16.0
+- @gradio/button@0.5.9
+
 ## 0.18.4
 
 ### Fixes

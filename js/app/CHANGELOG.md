@@ -1,5 +1,19 @@
 # @self/app
 
+## 1.50.8
+
+### Dependency updates
+
+- @gradio/client@1.17.0
+- @gradio/core@0.26.0
+
+## 1.50.7
+
+### Dependency updates
+
+- @gradio/client@1.16.0
+- @gradio/core@0.25.0
+
 ## 1.50.6
 
 ### Dependency updates

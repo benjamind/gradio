@@ -1,5 +1,17 @@
 # @gradio/client
 
+## 1.17.0
+
+### Features
+
+- [#11691](https://github.com/gradio-app/gradio/pull/11691) [`2605a99`](https://github.com/gradio-app/gradio/commit/2605a99bf29bebbbb0a97cc8e0015b5bf8d8e79b) - Add .failure() event listener for error handling.  Thanks @elanehan!
+
+## 1.16.0
+
+### Features
+
+- [#11662](https://github.com/gradio-app/gradio/pull/11662) [`a78f5fa`](https://github.com/gradio-app/gradio/commit/a78f5fa466a4b11ffaaafc5099a64df49afb6e41) - Gradio vibe editor.  Thanks @aliabid94!
+
 ## 1.15.7
 
 ### Fixes
