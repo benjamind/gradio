@@ -1,6 +1,6 @@
 {
-	"name": "@gradio/dataframe-standalone",
-	"version": "1.0.20",
+	"name": "@hmbgradio/dataframe-standalone",
+	"version": "1.0.27",
 	"description": "Standalone Gradio Dataframe component for Svelte",
 	"type": "module",
 	"main": "Index.svelte",

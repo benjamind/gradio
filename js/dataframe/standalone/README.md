@@ -35,8 +35,8 @@ Usage (Svelte/SvelteKit)
     console.log("selected", e.detail);
   }
 
-  function handle_search(e: any) {
-    console.log("searched", e.detail);
+  function handle_input(e: any) {
+    console.log("input", e.detail);
   }
 </script>
 
@@ -51,11 +51,11 @@ Usage (Svelte/SvelteKit)
   editable={true}
   on:change={handle_change}
   on:select={handle_select}
-  on:search={handle_search}
+  on:input={handle_input}
 />
 ```
 
-Common Props
+Props
 ------------
 
 - value?: (string | number | boolean)[][]
@@ -86,19 +86,16 @@ The component emits the following events:
   - detail: `{ data: (string | number | boolean)[][], headers: string[], metadata: null }`
 - select: fires when cell selection changes
   - detail: `{ index: number[]; value: any; selected: boolean }`
-- search: fires when the search input changes (when `show_search` is `"search" | "filter"`)
+- input: fires when the search input changes (when `show_search` is `"search" | "filter"`)
   - detail: `string | null`
-- fullscreen: fires when the fullscreen toggle is clicked
-  - detail: `boolean` (true when entering fullscreen, false when exiting)
 
 Example:
 
 ```svelte
 <Dataframe
   on:change={(e) => console.log('data', e.detail)}
+  on:input={(e) => console.log('input', e.detail)}
   on:select={(e) => console.log('select', e.detail)}
-  on:search={(e) => console.log('search', e.detail)}
-  on:fullscreen={(e) => console.log('fullscreen', e.detail)}
 />
 ```
 
@@ -152,6 +149,7 @@ Option 2: Override the internal styles
         background: #1f2937;
         color: #fff;
       }
+
       .df-override :global(.tbody td) {
         padding: 8px 10px;
       }
@@ -163,11 +161,6 @@ Option 2: Override the internal styles
       }
     </style>
 ```
-
-Notes
------
-
-- Fullscreen button emits `fullscreen`; host decides container behavior.
 
 License
 -------
