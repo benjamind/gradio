@@ -56,38 +56,40 @@ Usage (Svelte/SvelteKit)
 ```
 
 Props
-------------
+-----
 
-- value?: (string | number | boolean)[][]
-- headers?: string[]
-- datatype?: string[] | string (e.g. "str" | "number" | "bool" | "markdown" | "html" | "date")
-- editable?: boolean
-- show_row_numbers?: boolean
-- max_height?: number
-- show_search?: "none" | "search" | "filter"
-- show_copy_button?: boolean
-- show_fullscreen_button?: boolean
-- wrap?: boolean
-- line_breaks?: boolean
-- column_widths?: string[]
-- max_chars?: number
-- pinned_columns?: number
-- static_columns?: (string | number)[]
-- fullscreen?: boolean
-- label?: string | null
-- show_label?: boolean
+| Prop                    | Type                                   | Default   | Description                                                |
+|-------------------------|----------------------------------------|-----------|------------------------------------------------------------|
+| `value`                 | `(string \| number \| boolean)[][]`      | —         | Table data as rows x columns.                              |
+| `headers`               | `string[]`                              | `[]` or inferred | Column headers.                                      |
+| `datatype`              | `string[] \| string`                   | `"str"`   | Per-column or global: `"str"`, `"number"`, `"bool"`, `"date"`, `"markdown"`, `"html"`. |
+| `editable`              | `boolean`                               | `false`   | Enable cell editing.                                       |
+| `show_row_numbers`      | `boolean`                               | `false`   | Show a row-number column.                                  |
+| `max_height`            | `number`                                | —         | Max table height (px); scrolls when exceeded.              |
+| `show_search`           | `"none" \| "search" \| "filter"`       | `"none"`  | Show search input (and filter UI when `"filter"`).         |
+| `show_copy_button`      | `boolean`                               | `false`   | Show copy-to-clipboard button.                             |
+| `show_fullscreen_button`| `boolean`                               | `false`   | Show fullscreen toggle button.                             |
+| `wrap`                  | `boolean`                               | `false`   | Wrap cell text (otherwise may scroll horizontally).        |
+| `line_breaks`           | `boolean`                               | `true`    | Enable GFM line breaks in markdown cells.                  |
+| `column_widths`         | `string[]`                              | —         | Width per column, e.g. `"120px"` or `"15%"`.               |
+| `max_chars`             | `number`                                | —         | Truncate cell display after N characters.                  |
+| `pinned_columns`        | `number`                                | `0`       | Pin N columns from the left.                               |
+| `static_columns`        | `(string \| number)[]`                 | `[]`      | Disable edits/structure for these columns.                 |
+| `fullscreen`            | `boolean`                               | `false`   | Control fullscreen state externally.                       |
+| `label`                 | `string \| null`                       | `null`    | Accessible caption for the table.                          |
+| `show_label`            | `boolean`                               | `true`    | Show/hide the label visually.                              |
 
 Events
 ------
 
 The component emits the following events:
 
-- change: fires when table data changes
-  - detail: `{ data: (string | number | boolean)[][], headers: string[], metadata: null }`
-- select: fires when cell selection changes
-  - detail: `{ index: number[]; value: any; selected: boolean }`
-- input: fires when the search input changes (when `show_search` is `"search" | "filter"`)
-  - detail: `string | null`
+| Event   | Trigger                                      | Return type                                                   |
+|---------|-----------------------------------------------------|---------------------------------------------------------------|
+| change  | Table data changes             | `{ data: (string \| number \| boolean)[][], headers: string[], metadata: null }` |
+| select  | Cell selection change                              | `{ index: number[], value: any, selected: boolean }`          |
+| input   | User input | `string \| null`                                              |
+
 
 Example:
 
