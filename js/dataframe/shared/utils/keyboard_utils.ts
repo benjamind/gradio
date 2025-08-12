@@ -246,8 +246,6 @@ function handle_default_key(
 
 	const editing = state.ui_state.editing;
 
-	// Only enter editing on first printable keypress for this cell.
-	// Do not re-trigger set_editing while already editing the same cell.
 	if (event.key.length === 1 && (!editing || !dequal(editing, [i, j]))) {
 		ctx.actions.set_editing([i, j]);
 		return true;
