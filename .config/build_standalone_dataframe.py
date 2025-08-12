@@ -37,7 +37,6 @@ def build_and_copy_standalone_dataframe():
             capture_output=True,
             text=True,
         )
-        print("✅ Standalone dataframe build completed")
     except subprocess.CalledProcessError as e:
         print(f"❌ Standalone dataframe build failed: {e}")
         print(f"stdout: {e.stdout}")
@@ -65,7 +64,6 @@ def build_and_copy_standalone_dataframe():
         ignore=ignore_files,
         dirs_exist_ok=True,
     )
-
 
 if __name__ == "__main__":
     build_and_copy_standalone_dataframe()
