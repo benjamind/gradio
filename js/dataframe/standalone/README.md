@@ -1,4 +1,4 @@
-@hmbgradio/dataframe-standalone
+@gradio/dataframe
 ================================
 
 Standalone Svelte component that brings Gradio's Dataframe UI to any Svelte/SvelteKit project. 
@@ -7,9 +7,9 @@ Install
 -------
 
 ```
-npm i @hmbgradio/dataframe-standalone
+npm i @gradio/dataframe
 # or
-pnpm add @hmbgradio/dataframe-standalone
+pnpm add @gradio/dataframe
 ```
 
 Usage (Svelte/SvelteKit)
@@ -17,7 +17,7 @@ Usage (Svelte/SvelteKit)
 
 ```svelte
 <script lang="ts">
-  import Dataframe from "@hmbgradio/dataframe-standalone";
+  import Dataframe from "@gradio/dataframe";
 
   const data = [
     ["Alice", 25, true],

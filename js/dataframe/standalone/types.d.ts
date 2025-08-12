@@ -1,4 +1,4 @@
-declare module "@hmbgradio/dataframe-standalone" {
+declare module "@gradio/dataframe" {
 	import { SvelteComponent } from "svelte";
 
 	export interface DataframeProps {
@@ -39,7 +39,7 @@ declare module "@hmbgradio/dataframe-standalone" {
 	export default class Dataframe extends SvelteComponent<DataframeProps> {}
 }
 
-declare module "@hmbgradio/dataframe-standalone/shared/utils" {
+declare module "@gradio/dataframe/shared/utils" {
 	export type Datatype =
 		| "str"
 		| "markdown"
@@ -69,7 +69,7 @@ declare module "@hmbgradio/dataframe-standalone/shared/utils" {
 	): string | number | boolean;
 }
 
-declare module "@hmbgradio/dataframe-standalone/shared/context/dataframe_context" {
+declare module "@gradio/dataframe/shared/context/dataframe_context" {
 	export interface DataFrameContext {
 		state: any;
 		actions: any;

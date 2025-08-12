@@ -276,10 +276,9 @@ function update_types_file(): void {
 		const typesPath = "./types.d.ts";
 		if (existsSync(typesPath)) {
 			let content = readFileSync(typesPath, "utf8");
-			content = content.replace(
-				/@gradio\/dataframe-standalone/g,
-				"@hmbgradio/dataframe-standalone"
-			);
+			content = content
+				.replace(/@hmbgradio\/dataframe-standalone/g, "@gradio/dataframe")
+				.replace(/@gradio\/dataframe-standalone/g, "@gradio/dataframe");
 			writeFileSync(typesPath, content);
 			console.log("✅ Updated types.d.ts with correct package name");
 		} else {

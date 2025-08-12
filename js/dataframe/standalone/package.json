@@ -1,11 +1,14 @@
 {
-	"name": "@hmbgradio/dataframe-standalone",
+	"name": "@gradio/dataframe",
 	"version": "1.0.28",
-	"description": "Standalone Gradio Dataframe component for Svelte",
+	"description": "Standalone Svelte Dataframe component usable outside the Gradio monorepo.",
 	"type": "module",
 	"main": "Index.svelte",
 	"svelte": "Index.svelte",
 	"types": "./types.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
 	"exports": {
 		".": {
 			"types": "./types.d.ts",
@@ -19,27 +22,24 @@
 		"Index.svelte",
 		"shared/**/*",
 		"dataframe.css",
+		"theme.css",
 		"stubs.ts",
 		"stubs/**/*",
-		"types.d.ts",
-		"svelte.config.js",
-		"vite.config.js"
+		"types.d.ts"
 	],
 	"scripts": {
 		"build": "tsx build.ts",
-		"prepublishOnly": "npx tsx build.ts",
 		"dev": "vite dev",
-		"preview": "vite preview",
-		"test": "vite dev --port 3002"
+		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@gradio/icons": "^0.3.4"
+		"@gradio/icons": "^0.3.4",
+		"tsx": "^4.0.0",
+		"typescript": "^5.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
 		"svelte": "^5.0.0",
-		"tsx": "^4.0.0",
-		"typescript": "^5.0.0",
 		"vite": "^5.0.0"
 	},
 	"peerDependencies": {
@@ -53,7 +53,7 @@
 		"standalone",
 		"component"
 	],
-	"author": "Hannah Blair <hmbgradio>",
+	"author": "Gradio Team",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
