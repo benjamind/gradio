@@ -104,14 +104,19 @@ function modifyImports(content: string, filepath: string): string {
 }
 
 function setup_theme(): void {
-	if (existsSync("./theme.css")) {
+	if (existsSync("./theme/theme.css")) {
 		return;
 	}
 
 	console.log("Generating theme CSS...");
+
+	if (!existsSync("./theme")) {
+		mkdirSync("./theme", { recursive: true });
+	}
+
 	try {
 		execSync(
-			"python ../../../scripts/generate_theme.py --outfile ./theme.css",
+			"python ../../../scripts/generate_theme.py --outfile ./theme/theme.css",
 			{
 				cwd: process.cwd(),
 				stdio: "inherit"
@@ -123,9 +128,8 @@ function setup_theme(): void {
 			"⚠️ Failed to generate theme CSS, using fallback:",
 			error instanceof Error ? error.message : String(error)
 		);
-		// Create a minimal fallback theme.css
 		writeFileSync(
-			"./theme.css",
+			"./theme/theme.css",
 			"/* Fallback theme CSS - using existing theme files */\n"
 		);
 		console.log("✅ Using fallback theme CSS");
@@ -198,7 +202,7 @@ function create_consolidated_css(): void {
 			join(CONFIG.themeDir, "typography.css"),
 			"utf8"
 		);
-		const themeCSS = readFileSync("./theme.css", "utf8");
+		const themeCSS = readFileSync("./theme/theme.css", "utf8");
 
 		const scopedResetCSS = resetCSS
 			.replace(/\.gradio-container,\s*\*/g, ".gradio-dataframe-standalone *")

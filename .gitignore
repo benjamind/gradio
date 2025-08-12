@@ -96,7 +96,6 @@ build-storybook.log
 js/storybook/theme.css
 js/dataframe/standalone/shared/
 js/dataframe/standalone/theme/
-js/dataframe/standalone/theme.css
 js/dataframe/standalone/dataframe.css
 
 # playwright
