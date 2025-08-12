@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Build and prepare standalone dataframe for publishing.
-This script runs the standalone build and copies it to the frontend code directory.
+Build standalone dataframe and copy to frontend code directory.
+Simplified script that calls the comprehensive build.ts logic.
 """
 
 import pathlib
@@ -15,34 +15,18 @@ def build_and_copy_standalone_dataframe():
     standalone_dir = repo_root / "js" / "dataframe" / "standalone"
     dest_dir = repo_root / "gradio" / "_frontend_code" / "dataframe"
 
+    print(f"Building standalone dataframe from {standalone_dir}")
+
+    # Install dependencies and run build (build.ts handles all the logic)
     try:
-        subprocess.run(
-            ["npm", "install"],
-            cwd=str(standalone_dir),
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        print("✅ Dependencies installed")
+        subprocess.run(["npm", "install"], cwd=str(standalone_dir), check=True)
+        subprocess.run(["npm", "run", "build"], cwd=str(standalone_dir), check=True)
+        print("✅ Standalone dataframe built successfully")
     except subprocess.CalledProcessError as e:
-        print(f"❌ Failed to install dependencies: {e}")
-        print(f"stdout: {e.stdout}")
-        print(f"stderr: {e.stderr}")
-        raise
-    try:
-        subprocess.run(
-            ["npm", "run", "build"],
-            cwd=str(standalone_dir),
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Standalone dataframe build failed: {e}")
-        print(f"stdout: {e.stdout}")
-        print(f"stderr: {e.stderr}")
+        print(f"❌ Build failed: {e}")
         raise
 
+    # Copy built files to frontend code directory
     def ignore_files(d, names):
         ignored = []
         for n in names:
@@ -58,12 +42,10 @@ def build_and_copy_standalone_dataframe():
                 ignored.append(n)
         return ignored
 
-    shutil.copytree(
-        str(standalone_dir),
-        str(dest_dir),
-        ignore=ignore_files,
-        dirs_exist_ok=True,
-    )
+    print(f"Copying standalone dataframe to {dest_dir}")
+    shutil.copytree(str(standalone_dir), str(dest_dir), ignore=ignore_files, dirs_exist_ok=True)
+    print("✅ Standalone dataframe copied successfully")
+
 
 if __name__ == "__main__":
     build_and_copy_standalone_dataframe()
