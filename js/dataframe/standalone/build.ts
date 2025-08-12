@@ -284,29 +284,6 @@ const filesToCopy = [
 copy_and_modify_files(filesToCopy);
 console.log("✅ Shared files copied and modified for standalone use");
 
-function update_types_file(): void {
-	try {
-		const typesPath = "./types.d.ts";
-		if (existsSync(typesPath)) {
-			let content = readFileSync(typesPath, "utf8");
-			content = content
-				.replace(/@hmbgradio\/dataframe-standalone/g, "@gradio/dataframe")
-				.replace(/@gradio\/dataframe-standalone/g, "@gradio/dataframe");
-			writeFileSync(typesPath, content);
-			console.log("✅ Updated types.d.ts with correct package name");
-		} else {
-			console.log("⚠️  types.d.ts not found, skipping update");
-		}
-	} catch (error) {
-		console.error(
-			"❌ Failed to update types.d.ts:",
-			error instanceof Error ? error.message : String(error)
-		);
-	}
-}
-
-update_types_file();
-
 create_consolidated_css();
 
 console.log("✅ Standalone dataframe build complete!");

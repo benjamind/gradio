@@ -5,13 +5,11 @@
 	"type": "module",
 	"main": "Index.svelte",
 	"svelte": "Index.svelte",
-	"types": "./types.d.ts",
 	"publishConfig": {
 		"access": "public"
 	},
 	"exports": {
 		".": {
-			"types": "./types.d.ts",
 			"svelte": "./Index.svelte",
 			"default": "./Index.svelte"
 		},
@@ -22,10 +20,8 @@
 		"Index.svelte",
 		"shared/**/*",
 		"dataframe.css",
-		"theme.css",
 		"stubs.ts",
-		"stubs/**/*",
-		"types.d.ts"
+		"stubs/**/*"
 	],
 	"scripts": {
 		"build": "tsx build.ts",
