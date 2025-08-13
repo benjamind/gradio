@@ -1,30 +1,17 @@
-import { execSync } from "child_process";
 import {
-	copyFileSync,
 	mkdirSync,
 	existsSync,
 	readFileSync,
-	writeFileSync
+	writeFileSync,
+	rmSync,
+	readdirSync,
+	statSync
 } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
 
 console.log("Building standalone dataframe component...");
 
-interface Config {
-	themeDir: string;
-	sourceThemeDir: string;
-	sharedDir: string;
-	themeFiles: string[];
-	sharedSubDirs: string[];
-}
-
-const CONFIG: Config = {
-	themeDir: "./theme/src",
-	sourceThemeDir: "../../theme/src",
-	sharedDir: "./shared",
-	themeFiles: ["reset.css", "pollen.css", "typography.css"],
-	sharedSubDirs: ["utils", "context", "icons"]
-};
+const SHARED_DIR = "./shared";
 
 interface ImportReplacement {
 	pattern: RegExp;
@@ -45,11 +32,6 @@ const IMPORT_REPLACEMENTS: ImportReplacement[] = [
 	{ pattern: /from ["']@gradio\/utils["']/g, replacement: 'from "../stubs"' },
 	{ pattern: /from ["']@gradio\/client["']/g, replacement: 'from "../stubs"' },
 	{ pattern: /from ["']svelte-i18n["']/g, replacement: 'from "../stubs"' },
-	{
-		pattern: /from ["']js\/core\/src\/gradio_helper["']/g,
-		replacement: 'from "../stubs"'
-	},
-	{ pattern: /from ["']js\/utils\/src["']/g, replacement: 'from "../stubs"' },
 	{
 		pattern: /from ["'][^"']*DropdownArrow\.svelte["']/g,
 		replacement: 'from "../stubs"'
@@ -103,84 +85,35 @@ function modifyImports(content: string, filepath: string): string {
 	return modified;
 }
 
-function setup_theme(): void {
-	if (existsSync("./theme/theme.css")) {
-		return;
-	}
-
-	console.log("Generating theme CSS...");
-
-	if (!existsSync("./theme")) {
-		mkdirSync("./theme", { recursive: true });
-	}
-
-	try {
-		execSync(
-			"python ../../../scripts/generate_theme.py --outfile ./theme/theme.css",
-			{
-				cwd: process.cwd(),
-				stdio: "inherit"
-			}
-		);
-		console.log("✅ Theme CSS generated");
-	} catch (error) {
-		console.error(
-			"⚠️ Failed to generate theme CSS, using fallback:",
-			error instanceof Error ? error.message : String(error)
-		);
-		writeFileSync(
-			"./theme/theme.css",
-			"/* Fallback theme CSS - using existing theme files */\n"
-		);
-		console.log("✅ Using fallback theme CSS");
-	}
-
-	console.log("Copying theme files...");
-	if (!existsSync(CONFIG.themeDir)) {
-		mkdirSync(CONFIG.themeDir, { recursive: true });
-	}
-
-	for (const file of CONFIG.themeFiles) {
-		try {
-			copyFileSync(
-				join(CONFIG.sourceThemeDir, file),
-				join(CONFIG.themeDir, file)
-			);
-			console.log(`✅ Copied ${file}`);
-		} catch (error) {
-			console.error(
-				`❌ Failed to copy ${file}:`,
-				error instanceof Error ? error.message : String(error)
-			);
-			process.exit(1);
-		}
+function ensure_css(): void {
+	if (!existsSync("./dataframe.css")) {
+		writeFileSync("./dataframe.css", "/* Placeholder for dataframe.css. */\n");
 	}
 }
 
 function setup_shared_directory(): void {
 	console.log("Copying shared files...");
 
-	if (existsSync(CONFIG.sharedDir)) {
-		execSync(`rm -rf ${CONFIG.sharedDir}`);
+	if (existsSync(SHARED_DIR)) {
+		rmSync(SHARED_DIR, { recursive: true, force: true });
 	}
-	mkdirSync(CONFIG.sharedDir, { recursive: true });
-
-	for (const subDir of CONFIG.sharedSubDirs) {
-		mkdirSync(join(CONFIG.sharedDir, subDir), { recursive: true });
-	}
+	mkdirSync(SHARED_DIR, { recursive: true });
 }
 
 function copy_and_modify_files(filesToCopy: string[]): void {
 	for (const file of filesToCopy) {
 		const srcPath = join("../shared", file);
-		const destPath = join(CONFIG.sharedDir, file);
+		const destPath = join(SHARED_DIR, file);
 
 		try {
 			if (existsSync(srcPath)) {
 				const content = readFileSync(srcPath, "utf8");
 				const modifiedContent = modifyImports(content, file);
+				const destDir = dirname(destPath);
+				if (!existsSync(destDir)) {
+					mkdirSync(destDir, { recursive: true });
+				}
 				writeFileSync(destPath, modifiedContent);
-				console.log(`✅ Copied and modified ${file}`);
 			} else {
 				console.log(`⚠️  Skipped ${file} (doesn't exist)`);
 			}
@@ -193,100 +126,38 @@ function copy_and_modify_files(filesToCopy: string[]): void {
 	}
 }
 
-function create_consolidated_css(): void {
-	console.log("Creating consolidated CSS file...");
-	try {
-		const resetCSS = readFileSync(join(CONFIG.themeDir, "reset.css"), "utf8");
-		const pollenCSS = readFileSync(join(CONFIG.themeDir, "pollen.css"), "utf8");
-		const typographyCSS = readFileSync(
-			join(CONFIG.themeDir, "typography.css"),
-			"utf8"
-		);
-		const themeCSS = readFileSync("./theme/theme.css", "utf8");
+function collect_shared_files(): string[] {
+	const root = join("../shared");
+	const includeExts = new Set([".svelte", ".ts"]);
+	const excludePatterns = [/\.test\./, /\.stories\./, /\.spec\./];
 
-		const scopedResetCSS = resetCSS
-			.replace(/\.gradio-container,\s*\*/g, ".gradio-dataframe-standalone *")
-			.replace(/^(\s*)\*(\s*[,{])/gm, "$1.gradio-dataframe-standalone *$2")
-			.replace(
-				/^(\s*)::before,(\s*)::after(\s*\{)/gm,
-				"$1.gradio-dataframe-standalone *::before,$2.gradio-dataframe-standalone *::after$3"
-			);
-
-		const consolidatedCSS = `/* Gradio Dataframe Standalone - Consolidated CSS */
-
-/* Scoped Reset Styles */
-${scopedResetCSS}
-
-/* Design Tokens */
-${pollenCSS}
-
-/* Typography */
-${typographyCSS}
-
-/* Theme Styles */
-${themeCSS}
-
-/* Component styles handled by Svelte's scoped CSS */
-`;
-
-		writeFileSync("./dataframe.css", consolidatedCSS);
-		console.log("✅ Consolidated CSS file created: dataframe.css");
-	} catch (error) {
-		console.error(
-			"❌ Failed to create consolidated CSS:",
-			error instanceof Error ? error.message : String(error)
-		);
-		process.exit(1);
+	function walk(dir: string, relBase: string = ""): string[] {
+		let results: string[] = [];
+		for (const entry of readdirSync(dir)) {
+			const abs = join(dir, entry);
+			const rel = relBase ? join(relBase, entry) : entry;
+			const st = statSync(abs);
+			if (st.isDirectory()) {
+				results = results.concat(walk(abs, rel));
+				continue;
+			}
+			if (excludePatterns.some((rx) => rx.test(entry))) continue;
+			const dot = entry.lastIndexOf(".");
+			const ext = dot >= 0 ? entry.slice(dot) : "";
+			if (includeExts.has(ext)) {
+				results.push(rel);
+			}
+		}
+		return results;
 	}
+
+	return walk(root).sort();
 }
 
 // Main execution
-setup_theme();
+ensure_css();
 setup_shared_directory();
 
-const filesToCopy = [
-	"Table.svelte",
-	"EditableCell.svelte",
-	"RowNumber.svelte",
-	"TableHeader.svelte",
-	"TableCell.svelte",
-	"EmptyRowButton.svelte",
-	"VirtualTable.svelte",
-	"BooleanCell.svelte",
-	"CellMenu.svelte",
-	"CellMenuButton.svelte",
-	"CellMenuIcons.svelte",
-	"FilterMenu.svelte",
-	"Toolbar.svelte",
-	"Example.svelte",
-	"selection_utils.ts",
-	"utils.ts",
-	"icons/Padlock.svelte",
-	"icons/SortArrowUp.svelte",
-	"icons/SortArrowDown.svelte",
-	"icons/SortButtonUp.svelte",
-	"icons/SortButtonDown.svelte",
-	"icons/SortIcon.svelte",
-	"icons/FilterIcon.svelte",
-	"icons/SelectionButtons.svelte",
-	"utils/table_utils.ts",
-	"utils/filter_utils.ts",
-	"utils/sort_utils.ts",
-	"utils/drag_utils.ts",
-	"utils/keyboard_utils.ts",
-	"utils/data_processing.ts",
-	"utils/menu_utils.ts",
-	"utils/index.ts",
-	"context/dataframe_context.ts",
-	"types.ts"
-];
-
-copy_and_modify_files(filesToCopy);
-console.log("✅ Shared files copied and modified for standalone use");
-
-create_consolidated_css();
-
-console.log("✅ Standalone dataframe build complete!");
-console.log("📝 Shared files have been copied and modified for standalone use");
-console.log("📦 Package is ready for npm publishing");
-console.log("🎯 Main entry point: Index.svelte");
+const files_to_copy = collect_shared_files();
+copy_and_modify_files(files_to_copy);
+console.log("✅ Standalone dataframe build complete");
