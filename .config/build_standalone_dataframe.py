@@ -5,7 +5,6 @@ Build standalone dataframe and copy to frontend code directory.
 
 import pathlib
 import shutil
-import subprocess
 
 
 def build_and_copy_standalone_dataframe():
@@ -14,12 +13,6 @@ def build_and_copy_standalone_dataframe():
     standalone_dir = repo_root / "js" / "dataframe" / "standalone"
     dest_dir = repo_root / "gradio" / "_frontend_code" / "dataframe"
 
-    try:
-        subprocess.run(["npm", "install"], cwd=str(standalone_dir), check=True)
-        subprocess.run(["npm", "run", "build"], cwd=str(standalone_dir), check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Build failed: {e}")
-        raise
 
     def ignore_files(d, names):
         ignored = []
@@ -35,8 +28,11 @@ def build_and_copy_standalone_dataframe():
                 ignored.append(n)
         return ignored
 
+    if dest_dir.exists():
+        shutil.rmtree(dest_dir)
+
     shutil.copytree(
-        str(standalone_dir), str(dest_dir), ignore=ignore_files, dirs_exist_ok=True
+        str(standalone_dir), str(dest_dir), ignore=ignore_files, dirs_exist_ok=False
     )
 
 
