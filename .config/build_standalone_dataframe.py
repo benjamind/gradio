@@ -32,7 +32,6 @@ def build_and_copy_standalone_dataframe():
         for n in names:
             if (
                 n.startswith("CHANGELOG")
-                or n.startswith("README.md")
                 or n.startswith("node_modules")
                 or n == "package.json"  # Preserve original package.json
                 or ".test." in n
