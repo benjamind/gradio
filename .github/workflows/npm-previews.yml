@@ -50,9 +50,9 @@ jobs:
         run: python .config/build_standalone_dataframe.py
       - name: build client
         run: pnpm --filter @gradio/client --filter @gradio/wasm --filter @gradio/preview build
-      - name: publish npm previews (js a-m)
-        run: pnpx pkg-pr-new publish './js/[a-m]*' --comment=off
-      - name: publish npm previews (js n-z)
-        run: pnpx pkg-pr-new publish './js/[n-z]*' --comment=off
+      - name: publish npm previews (js)
+        run: |
+          shopt -s extglob
+          pnpx pkg-pr-new publish ./js/!(dataframe) --comment=off
       - name: publish npm previews (client/js)
         run: pnpx pkg-pr-new publish './client/js' --comment=off
