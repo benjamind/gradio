@@ -1,6 +1,45 @@
 <script lang="ts">
 	import Table from "./shared/Table.svelte";
 	import "./dataframe.css";
+	import { onMount, onDestroy } from "svelte";
+	import {
+		requestFullscreenFor,
+		exitFullscreenIfActive,
+		isFullscreenElement
+	} from "./fullscreen";
+
+	const default_i18n: Record<string, string> = {
+		"dataframe.add_row_above": "Add row above",
+		"dataframe.add_row_below": "Add row below",
+		"dataframe.delete_row": "Delete row",
+		"dataframe.add_column_left": "Add column left",
+		"dataframe.add_column_right": "Add column right",
+		"dataframe.delete_column": "Delete column",
+		"dataframe.sort_asc": "Sort ascending",
+		"dataframe.sort_desc": "Sort descending",
+		"dataframe.sort_ascending": "Sort ascending",
+		"dataframe.sort_descending": "Sort descending",
+		"dataframe.clear_sort": "Clear sort",
+		"dataframe.filter": "Filter",
+		"dataframe.clear_filter": "Clear filter",
+		"dataframe.copy": "Copy",
+		"dataframe.paste": "Paste",
+		"dataframe.cut": "Cut",
+		"dataframe.select_all": "Select all",
+		"dataframe.fullscreen": "Fullscreen",
+		"dataframe.exit_fullscreen": "Exit fullscreen",
+		"dataframe.search": "Search",
+		"dataframe.export": "Export",
+		"dataframe.import": "Import",
+		"dataframe.edit": "Edit",
+		"dataframe.save": "Save",
+		"dataframe.cancel": "Cancel",
+		"dataframe.confirm": "Confirm",
+		"dataframe.reset": "Reset",
+		"dataframe.clear": "Clear",
+		"dataframe.undo": "Undo",
+		"dataframe.redo": "Redo"
+	};
 
 	export let value: (string | number)[][] = [];
 	export let headers: string[] = [];
@@ -31,41 +70,9 @@
 		"dynamic"
 	];
 	export let root = "";
-	export let i18n: any = (key: string, ...args: any[]) => {
-		const translations: Record<string, string> = {
-			"dataframe.add_row_above": "Add row above",
-			"dataframe.add_row_below": "Add row below",
-			"dataframe.delete_row": "Delete row",
-			"dataframe.add_column_left": "Add column left",
-			"dataframe.add_column_right": "Add column right",
-			"dataframe.delete_column": "Delete column",
-			"dataframe.sort_asc": "Sort ascending",
-			"dataframe.sort_desc": "Sort descending",
-			"dataframe.sort_ascending": "Sort ascending",
-			"dataframe.sort_descending": "Sort descending",
-			"dataframe.clear_sort": "Clear sort",
-			"dataframe.filter": "Filter",
-			"dataframe.clear_filter": "Clear filter",
-			"dataframe.copy": "Copy",
-			"dataframe.paste": "Paste",
-			"dataframe.cut": "Cut",
-			"dataframe.select_all": "Select all",
-			"dataframe.fullscreen": "Fullscreen",
-			"dataframe.exit_fullscreen": "Exit fullscreen",
-			"dataframe.search": "Search",
-			"dataframe.export": "Export",
-			"dataframe.import": "Import",
-			"dataframe.edit": "Edit",
-			"dataframe.save": "Save",
-			"dataframe.cancel": "Cancel",
-			"dataframe.confirm": "Confirm",
-			"dataframe.reset": "Reset",
-			"dataframe.clear": "Clear",
-			"dataframe.undo": "Undo",
-			"dataframe.redo": "Redo"
-		};
-		return translations[key] || key;
-	};
+	// Standalone default: resolve known dataframe.* tokens to English, else echo key
+	export let i18n: (key: string) => string = (key: string) =>
+		default_i18n[key] ?? key;
 	export let upload = null;
 	export let stream_handler = null;
 	export let value_is_output = false;
@@ -74,12 +81,37 @@
 	export let elem_id = "";
 	export let elem_classes: string[] = [];
 	export let visible = true;
+
+	let container: HTMLDivElement;
+
+	async function enter_fullscreen(): Promise<void> {
+		if (!container) return;
+		await requestFullscreenFor(container);
+	}
+
+	async function exit_fullscreen(): Promise<void> {
+		await exitFullscreenIfActive();
+		fullscreen = false;
+	}
+
+	function handle_fullscreen_change(): void {
+		fullscreen = isFullscreenElement(container);
+	}
+
+	onMount(() => {
+		document.addEventListener("fullscreenchange", handle_fullscreen_change);
+	});
+
+	onDestroy(() => {
+		document.removeEventListener("fullscreenchange", handle_fullscreen_change);
+	});
 </script>
 
 <div
 	class="gradio-dataframe-standalone {elem_classes.join(' ')}"
 	class:visible
 	id={elem_id}
+	bind:this={container}
 >
 	<Table
 		values={value}
@@ -116,7 +148,13 @@
 		on:keydown
 		on:input
 		on:select
-		on:fullscreen
+		on:fullscreen={({ detail }) => {
+			if (detail) {
+				void enter_fullscreen();
+			} else {
+				void exit_fullscreen();
+			}
+		}}
 	/>
 </div>
 

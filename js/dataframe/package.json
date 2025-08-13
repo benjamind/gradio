@@ -46,7 +46,13 @@
 		"marked": "^12.0.0"
 	},
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^4.0.0",
+		"@gradio/markdown-code": "*"
+	},
+	"peerDependenciesMeta": {
+		"@gradio/markdown-code": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@gradio/preview": "workspace:^"
