@@ -46,13 +46,7 @@ jobs:
         uses: "gradio-app/gradio/.github/actions/install-frontend-deps@main"
         with:
           skip_build: true
-      - name: Use standalone dataframe sources
-        run: python .config/build_standalone_dataframe.py
       - name: build client
         run: pnpm --filter @gradio/client --filter @gradio/wasm --filter @gradio/preview build
-      - name: publish npm previews (js)
-        run: |
-          shopt -s extglob
-          pnpx pkg-pr-new publish ./js/!(dataframe) --comment=off
-      - name: publish npm previews (client/js)
-        run: pnpx pkg-pr-new publish './client/js' --comment=off
+      - name: publish npm previews
+        run: pnpx pkg-pr-new publish './js/*' './client/js' --comment=off
