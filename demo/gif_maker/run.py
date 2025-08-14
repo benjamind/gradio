@@ -6,14 +6,10 @@ def gif_maker(img_files):
     size = (1, 1)
     for filename in img_files:
         img = cv2.imread(filename.name)
-        if img is None:
-            continue
-        height, width = img.shape[:2]  # type: ignore[reportOptionalMemberAccess]
-        size = (width, height)
+        height, width, _ = img.shape
+        size = (width,height)
         img_array.append(img)
     output_file = "test.mp4"
-    if not img_array:
-        raise ValueError("No valid images provided")
     out = cv2.VideoWriter(output_file,cv2.VideoWriter_fourcc(*'h264'), 15, size)  # type: ignore
     for i in range(len(img_array)):
         out.write(img_array[i])
