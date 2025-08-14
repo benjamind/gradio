@@ -26,10 +26,7 @@ jobs:
           python_version: "3.12"
           skip_build: "false"
           build_lite: "true"
-      - name: Use standalone dataframe sources
-        run: |
-          . venv/bin/activate
-          python .config/build_standalone_dataframe.py
+
       - name: Build packages
         run: |
           . venv/bin/activate
