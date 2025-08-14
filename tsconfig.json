@@ -57,8 +57,7 @@
 		"**/storybook-static/**/*",
 		"**/build/out/**/*",
 		"**/component-test/**/*",
-		"**/js/wasm/src/webworker/**/*",
-		"**/js/dataframe/standalone/**/*"
+		"**/js/wasm/src/webworker/**/*"
 	],
 	"include": [
 		"**/*.d.ts",
