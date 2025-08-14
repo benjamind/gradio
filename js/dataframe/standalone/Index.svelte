@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table from "./Table.svelte";
+	import Base from "../BaseDataframe.svelte";
 	import "./dataframe.css";
 	import { onMount, onDestroy } from "svelte";
 
@@ -139,8 +139,8 @@
 	id={elem_id}
 	bind:this={container}
 >
-	<Table
-		values={value}
+	<Base
+		{value}
 		{headers}
 		{datatype}
 		{editable}
@@ -169,6 +169,9 @@
 		{value_is_output}
 		{display_value}
 		{styling}
+		{elem_id}
+		{elem_classes}
+		{visible}
 		on:change
 		on:blur
 		on:keydown
