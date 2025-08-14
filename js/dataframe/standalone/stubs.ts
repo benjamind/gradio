@@ -18,9 +18,7 @@ export { default as BaseCheckbox } from "./stubs/BaseCheckbox.svelte";
 export { default as Upload } from "./stubs/Upload.svelte";
 
 export const StatusTracker = null;
-export const IconButton = null;
 
-export { default as FullscreenButton } from "./stubs/FullscreenButton.svelte";
 
 export interface SelectData {
 	index: number[];
@@ -31,6 +29,6 @@ export interface SelectData {
 export type I18nFormatter = (key: string, ...args: any[]) => string;
 
 export interface Client {
-	upload: typeof client.upload;
-	stream: typeof client.stream;
+	upload: any;
+	stream: any;
 }

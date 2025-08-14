@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Table from "./shared/Table.svelte";
+	import Table from "./Table.svelte";
 	import "./dataframe.css";
 	import { onMount, onDestroy } from "svelte";
 

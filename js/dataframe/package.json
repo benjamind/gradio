@@ -10,11 +10,8 @@
 	"main": "./standalone/Index.svelte",
 	"svelte": "./standalone/Index.svelte",
 	"files": [
-		"standalone/Index.svelte",
-		"standalone/shared/**/*",
-		"standalone/dataframe.css",
-		"standalone/stubs.ts",
-		"standalone/stubs/**/*"
+		"standalone/**/*",
+		"shared/**/*"
 	],
 	"exports": {
 		".": {
@@ -23,19 +20,13 @@
 			"default": "./standalone/Index.svelte",
 			"types": "./dist/Index.svelte.d.ts"
 		},
-		"./shared/*": "./standalone/shared/*",
+		"./shared/*": "./standalone/*",
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@gradio/atoms": "workspace:^",
-		"@gradio/button": "workspace:^",
-		"@gradio/checkbox": "workspace:^",
-		"@gradio/client": "workspace:^",
-		"@gradio/icons": "workspace:^",
-		"@gradio/markdown-code": "workspace:^",
-		"@gradio/statustracker": "workspace:^",
-		"@gradio/upload": "workspace:^",
-		"@gradio/utils": "workspace:^",
+		"@gradio/atoms": "^0.16.4",
+		"@gradio/icons": "^0.12.0",
+		"@gradio/markdown-code": "^0.5.0",
 		"@types/d3-dsv": "^3.0.0",
 		"@types/dompurify": "^3.0.2",
 		"@types/katex": "^0.16.0",
