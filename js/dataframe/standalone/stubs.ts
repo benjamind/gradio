@@ -30,8 +30,6 @@ export const StatusTracker = null;
 
 export const IconButton = null;
 
-export { default as MarkdownCode } from "./stubs/MarkdownCode.svelte";
-
 export class ShareError extends Error {
 	constructor(message: string) {
 		super(message);
