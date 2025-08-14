@@ -2,11 +2,37 @@
 	import Table from "./shared/Table.svelte";
 	import "./dataframe.css";
 	import { onMount, onDestroy } from "svelte";
-	import {
-		requestFullscreenFor,
-		exitFullscreenIfActive,
-		isFullscreenElement
-	} from "./fullscreen";
+
+	async function requestFullscreenFor(element: Element): Promise<void> {
+		const anyEl = element as any;
+		if ((element as any).requestFullscreen) {
+			await (element as any).requestFullscreen();
+			return;
+		}
+		if (anyEl.webkitRequestFullscreen) {
+			anyEl.webkitRequestFullscreen();
+		}
+	}
+
+	async function exitFullscreenIfActive(): Promise<void> {
+		const anyDoc = document as any;
+		if (document.fullscreenElement && document.exitFullscreen) {
+			await document.exitFullscreen();
+			return;
+		}
+		if (anyDoc.webkitFullscreenElement && anyDoc.webkitExitFullscreen) {
+			anyDoc.webkitExitFullscreen();
+		}
+	}
+
+	function isFullscreenElement(element: Element | null): boolean {
+		if (!element) return false;
+		const anyDoc = document as any;
+		return (
+			document.fullscreenElement === element ||
+			anyDoc.webkitFullscreenElement === element
+		);
+	}
 
 	const default_i18n: Record<string, string> = {
 		"dataframe.add_row_above": "Add row above",
